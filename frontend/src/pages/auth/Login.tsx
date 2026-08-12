@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import { authApi } from '../../services/auth.api';
-import { ShieldCheck, Users, Boxes, Receipt, ArrowRight, ArrowLeft } from 'lucide-react';
+import { ShieldCheck, Users, Boxes, Receipt, ArrowRight, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { Role } from '../../types';
 import GradientWaves from '../../components/GradientWaves';
 import GooeyNav from '../../components/GooeyNav';
@@ -14,8 +14,7 @@ interface RoleOption {
   desc: string;
   formSubtitle: string;
   icon: React.FC<{ className?: string }>;
-  defaultUsername: string;
-  defaultPass: string;
+  placeholderUsername: string;
 }
 
 const ROLES: RoleOption[] = [
@@ -25,8 +24,7 @@ const ROLES: RoleOption[] = [
     desc: 'System administration',
     formSubtitle: 'Sign in to continue to the operations portal.',
     icon: ShieldCheck,
-    defaultUsername: 'admin_emp',
-    defaultPass: 'Admin@12',
+    placeholderUsername: 'admin_emp',
   },
   {
     id: 'SALES',
@@ -34,8 +32,7 @@ const ROLES: RoleOption[] = [
     desc: 'Customers & challans',
     formSubtitle: 'Sign in to manage customers and sales operations.',
     icon: Users,
-    defaultUsername: 'saleemp_001',
-    defaultPass: 'Sales@12',
+    placeholderUsername: 'saleemp_001',
   },
   {
     id: 'WAREHOUSE',
@@ -43,8 +40,7 @@ const ROLES: RoleOption[] = [
     desc: 'Products & stock',
     formSubtitle: 'Sign in to manage products and inventory.',
     icon: Boxes,
-    defaultUsername: 'whemp_001',
-    defaultPass: 'House@12',
+    placeholderUsername: 'whemp_001',
   },
   {
     id: 'ACCOUNTS',
@@ -52,8 +48,7 @@ const ROLES: RoleOption[] = [
     desc: 'Business records',
     formSubtitle: 'Sign in to review business records and challans.',
     icon: Receipt,
-    defaultUsername: 'acemp_001',
-    defaultPass: 'Account@12',
+    placeholderUsername: 'acemp_001',
   },
 ];
 
@@ -61,6 +56,7 @@ export const Login: React.FC = () => {
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -69,8 +65,9 @@ export const Login: React.FC = () => {
 
   const handleSelectRole = (roleOpt: RoleOption) => {
     setSelectedRole(roleOpt.id);
-    setUsername(roleOpt.defaultUsername);
-    setPassword(roleOpt.defaultPass);
+    setUsername('');
+    setPassword('');
+    setShowPassword(false);
     setError('');
   };
 
@@ -290,7 +287,7 @@ export const Login: React.FC = () => {
                         <input
                           id="login-username"
                           type="text"
-                          placeholder="e.g. admin_emp, saleemp_001..."
+                          placeholder={`e.g. ${currentRoleOpt?.placeholderUsername || 'username'}`}
                           value={username}
                           onChange={(e) => setUsername(e.target.value)}
                           required
@@ -302,15 +299,29 @@ export const Login: React.FC = () => {
                         <label htmlFor="login-password" className="block text-xs font-semibold text-slate-300 mb-1.5">
                           Password
                         </label>
-                        <input
-                          id="login-password"
-                          type="password"
-                          placeholder="••••••••"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
-                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500 transition-all"
-                        />
+                        <div className="relative">
+                          <input
+                            id="login-password"
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder="Enter password..."
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="w-full pl-4 pr-11 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500 transition-all"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors focus:outline-none p-1 rounded-lg hover:bg-slate-800/50"
+                            title={showPassword ? 'Hide password' : 'Show password'}
+                          >
+                            {showPassword ? (
+                              <EyeOff className="w-4 h-4 text-purple-400" />
+                            ) : (
+                              <Eye className="w-4 h-4 text-slate-400" />
+                            )}
+                          </button>
+                        </div>
                       </div>
 
                       <div className="pt-2">
