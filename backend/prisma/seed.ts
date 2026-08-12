@@ -7,16 +7,20 @@ async function main() {
   console.log('🌱 Starting database seed...');
 
   // Hash passwords
-  const passwordHashAdmin = await bcrypt.hash('admin123', 10);
-  const passwordHashSales = await bcrypt.hash('sales123', 10);
-  const passwordHashWarehouse = await bcrypt.hash('warehouse123', 10);
-  const passwordHashAccounts = await bcrypt.hash('accounts123', 10);
+  const passwordHashAdmin = await bcrypt.hash('Admin@12', 10);
+  const passwordHashSales = await bcrypt.hash('Sales@12', 10);
+  const passwordHashWarehouse = await bcrypt.hash('House@12', 10);
+  const passwordHashAccounts = await bcrypt.hash('Account@12', 10);
 
   // 1. Upsert Users
   const adminUser = await prisma.user.upsert({
     where: { email: 'admin@erp.com' },
-    update: {},
+    update: {
+      username: 'admin_emp',
+      passwordHash: passwordHashAdmin,
+    },
     create: {
+      username: 'admin_emp',
       name: 'System Administrator',
       email: 'admin@erp.com',
       passwordHash: passwordHashAdmin,
@@ -26,8 +30,12 @@ async function main() {
 
   const salesUser = await prisma.user.upsert({
     where: { email: 'sales@erp.com' },
-    update: {},
+    update: {
+      username: 'saleemp_001',
+      passwordHash: passwordHashSales,
+    },
     create: {
+      username: 'saleemp_001',
       name: 'Sarah Sales Manager',
       email: 'sales@erp.com',
       passwordHash: passwordHashSales,
@@ -37,8 +45,12 @@ async function main() {
 
   const warehouseUser = await prisma.user.upsert({
     where: { email: 'warehouse@erp.com' },
-    update: {},
+    update: {
+      username: 'whemp_001',
+      passwordHash: passwordHashWarehouse,
+    },
     create: {
+      username: 'whemp_001',
       name: 'Wayne Warehouse Lead',
       email: 'warehouse@erp.com',
       passwordHash: passwordHashWarehouse,
@@ -48,8 +60,12 @@ async function main() {
 
   const accountsUser = await prisma.user.upsert({
     where: { email: 'accounts@erp.com' },
-    update: {},
+    update: {
+      username: 'acemp_001',
+      passwordHash: passwordHashAccounts,
+    },
     create: {
+      username: 'acemp_001',
       name: 'Alex Accounts Executive',
       email: 'accounts@erp.com',
       passwordHash: passwordHashAccounts,
@@ -57,7 +73,7 @@ async function main() {
     },
   });
 
-  console.log('✅ Users seeded: Admin, Sales, Warehouse, Accounts');
+  console.log('✅ Users seeded: admin_emp, saleemp_001, whemp_001, acemp_001');
 
   // Upsert Employee Records
   await prisma.employee.upsert({

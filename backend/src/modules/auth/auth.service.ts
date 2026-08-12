@@ -6,13 +6,19 @@ import { LoginInput } from './auth.validation';
 
 export class AuthService {
   static async login(input: LoginInput) {
-    const user = await prisma.user.findUnique({
-      where: { email: input.email },
+    const identifier = input.username || input.email || '';
+    const user = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { username: { equals: identifier, mode: 'insensitive' } },
+          { email: { equals: identifier, mode: 'insensitive' } },
+        ],
+      },
       include: { employee: true },
     });
 
     if (!user) {
-      throw new ApiError(401, 'Invalid email or password');
+      throw new ApiError(401, 'Invalid username or password');
     }
 
     // Check account status
@@ -27,20 +33,21 @@ export class AuthService {
     // Check password
     const isPasswordValid = await comparePassword(input.password, user.passwordHash);
     if (!isPasswordValid) {
-      throw new ApiError(401, 'Invalid email or password');
+      throw new ApiError(401, 'Invalid username or password');
     }
 
     // Check role mismatch if selectedRole was provided by UI
     if (input.role && input.role.toUpperCase() !== user.role) {
       throw new ApiError(
         401,
-        `Role mismatch for account '${user.email}'. You selected '${input.role}' but your assigned role is '${user.role}'.`
+        `Role mismatch for account '${user.username || user.email}'. You selected '${input.role}' but your assigned role is '${user.role}'.`
       );
     }
 
     const tokenPayload = {
       id: user.id,
       email: user.email,
+      username: user.username,
       role: user.role,
       name: user.name,
     };
@@ -53,6 +60,7 @@ export class AuthService {
         id: user.id,
         name: user.name,
         email: user.email,
+        username: user.username,
         role: user.role,
       },
     };

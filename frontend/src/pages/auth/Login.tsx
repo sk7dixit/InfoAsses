@@ -14,7 +14,7 @@ interface RoleOption {
   desc: string;
   formSubtitle: string;
   icon: React.FC<{ className?: string }>;
-  defaultEmail: string;
+  defaultUsername: string;
   defaultPass: string;
 }
 
@@ -25,8 +25,8 @@ const ROLES: RoleOption[] = [
     desc: 'System administration',
     formSubtitle: 'Sign in to continue to the operations portal.',
     icon: ShieldCheck,
-    defaultEmail: 'admin@erp.com',
-    defaultPass: 'admin123',
+    defaultUsername: 'admin_emp',
+    defaultPass: 'Admin@12',
   },
   {
     id: 'SALES',
@@ -34,8 +34,8 @@ const ROLES: RoleOption[] = [
     desc: 'Customers & challans',
     formSubtitle: 'Sign in to manage customers and sales operations.',
     icon: Users,
-    defaultEmail: 'sales@erp.com',
-    defaultPass: 'sales123',
+    defaultUsername: 'saleemp_001',
+    defaultPass: 'Sales@12',
   },
   {
     id: 'WAREHOUSE',
@@ -43,8 +43,8 @@ const ROLES: RoleOption[] = [
     desc: 'Products & stock',
     formSubtitle: 'Sign in to manage products and inventory.',
     icon: Boxes,
-    defaultEmail: 'warehouse@erp.com',
-    defaultPass: 'warehouse123',
+    defaultUsername: 'whemp_001',
+    defaultPass: 'House@12',
   },
   {
     id: 'ACCOUNTS',
@@ -52,14 +52,14 @@ const ROLES: RoleOption[] = [
     desc: 'Business records',
     formSubtitle: 'Sign in to review business records and challans.',
     icon: Receipt,
-    defaultEmail: 'accounts@erp.com',
-    defaultPass: 'accounts123',
+    defaultUsername: 'acemp_001',
+    defaultPass: 'Account@12',
   },
 ];
 
 export const Login: React.FC = () => {
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -69,7 +69,7 @@ export const Login: React.FC = () => {
 
   const handleSelectRole = (roleOpt: RoleOption) => {
     setSelectedRole(roleOpt.id);
-    setEmail(roleOpt.defaultEmail);
+    setUsername(roleOpt.defaultUsername);
     setPassword(roleOpt.defaultPass);
     setError('');
   };
@@ -80,7 +80,7 @@ export const Login: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await authApi.login({ email, password, role: selectedRole || undefined });
+      const response = await authApi.login({ username, password, role: selectedRole || undefined });
       const user = response.data.user;
       login(response.data.token, user);
 
@@ -284,15 +284,15 @@ export const Login: React.FC = () => {
 
                     <form className="space-y-4" onSubmit={handleLogin}>
                       <div>
-                        <label htmlFor="login-email" className="block text-xs font-semibold text-slate-300 mb-1.5">
-                          Work email
+                        <label htmlFor="login-username" className="block text-xs font-semibold text-slate-300 mb-1.5">
+                          Employee Username
                         </label>
                         <input
-                          id="login-email"
-                          type="email"
-                          placeholder="you@company.com"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
+                          id="login-username"
+                          type="text"
+                          placeholder="e.g. admin_emp, saleemp_001..."
+                          value={username}
+                          onChange={(e) => setUsername(e.target.value)}
                           required
                           className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500 transition-all"
                         />

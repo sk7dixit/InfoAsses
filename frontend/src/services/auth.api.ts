@@ -7,7 +7,7 @@ export interface LoginResponse {
 }
 
 export const authApi = {
-  login: async (credentials: { email: string; password: string; role?: string }) => {
+  login: async (credentials: { username?: string; email?: string; password: string; role?: string }) => {
     const res = await api.post<ApiResponse<LoginResponse>>('/auth/login', credentials);
     return res.data;
   },
