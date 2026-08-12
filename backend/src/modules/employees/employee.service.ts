@@ -101,14 +101,19 @@ export class EmployeeService {
     let createdUserId: string | undefined;
 
     if (data.loginEnabled) {
-      const existingUser = await prisma.user.findUnique({ where: { email: data.email } });
+      const existingUser = await prisma.user.findFirst({
+        where: {
+          OR: [{ email: data.email }, { username: data.employeeId }],
+        },
+      });
       if (existingUser) {
         createdUserId = existingUser.id;
       } else {
-        const rawPass = data.password || 'emp123';
+        const rawPass = data.password || 'Emp@2026';
         const passwordHash = await bcrypt.hash(rawPass, 10);
         const newUser = await prisma.user.create({
           data: {
+            username: data.employeeId,
             name: data.fullName,
             email: data.email,
             passwordHash,

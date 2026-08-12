@@ -138,13 +138,30 @@ export const UserManagement: React.FC = () => {
     },
   });
 
-  const resetForm = () => {
+  const generateRoleEmployeeId = (targetRole: Role, allEmp: Employee[]) => {
+    const rolePrefixMap: Record<Role, string> = {
+      SALES: 'saleemp_',
+      WAREHOUSE: 'whemp_',
+      ACCOUNTS: 'acemp_',
+      ADMIN: 'admin_emp_',
+    };
+    const prefix = rolePrefixMap[targetRole] || 'saleemp_';
+    const sameRoleEmps = allEmp.filter(
+      (e) => e.role === targetRole || e.employeeId.toLowerCase().startsWith(prefix.toLowerCase())
+    );
+    const nextNum = sameRoleEmps.length + 1;
+    const padNum = String(nextNum).padStart(3, '0');
+    return `${prefix}${padNum}`;
+  };
+
+  const resetForm = (targetRole: Role = 'SALES') => {
+    const empId = generateRoleEmployeeId(targetRole, employees);
     setFormData({
       fullName: '',
-      employeeId: `EMP-00${Math.floor(Math.random() * 90) + 10}`,
+      employeeId: empId,
       email: '',
       phone: '',
-      role: 'SALES',
+      role: targetRole,
       joiningDate: new Date().toISOString().split('T')[0],
       contractStart: '',
       contractEnd: '',
@@ -156,8 +173,17 @@ export const UserManagement: React.FC = () => {
     setFormError('');
   };
 
+  const handleRoleChange = (newRole: Role) => {
+    const newEmpId = generateRoleEmployeeId(newRole, employees);
+    setFormData((prev) => ({
+      ...prev,
+      role: newRole,
+      employeeId: newEmpId,
+    }));
+  };
+
   const handleOpenAddModal = () => {
-    resetForm();
+    resetForm('SALES');
     setIsAddModalOpen(true);
   };
 
@@ -495,11 +521,12 @@ export const UserManagement: React.FC = () => {
             <Select
               label="Department / Role"
               value={formData.role}
-              onChange={(e) => setFormData({ ...formData, role: e.target.value as Role })}
+              onChange={(e) => handleRoleChange(e.target.value as Role)}
               options={[
                 { label: 'Sales', value: 'SALES' },
                 { label: 'Warehouse', value: 'WAREHOUSE' },
                 { label: 'Accounts', value: 'ACCOUNTS' },
+                { label: 'Admin', value: 'ADMIN' },
               ]}
             />
 
