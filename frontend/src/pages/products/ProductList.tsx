@@ -153,6 +153,15 @@ export const ProductList: React.FC = () => {
       header: 'Actions',
       accessor: (row) => (
         <div className="flex items-center space-x-1">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setViewingProduct(row)}
+            title="View Product Details"
+            icon={<Eye className="w-3.5 h-3.5 text-blue-600" />}
+          >
+            View &rarr;
+          </Button>
           {canEdit && (
             <Button
               variant="ghost"
@@ -175,17 +184,6 @@ export const ProductList: React.FC = () => {
               title="Delete Product Master"
               icon={<Trash2 className="w-3.5 h-3.5 text-slate-400 hover:text-rose-600" />}
             />
-          )}
-          {!canEdit && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setSelectedProduct(row)}
-              title="View Product Details"
-              icon={<Eye className="w-3.5 h-3.5 text-blue-600" />}
-            >
-              View &rarr;
-            </Button>
           )}
         </div>
       ),
