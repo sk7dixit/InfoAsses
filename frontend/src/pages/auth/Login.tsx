@@ -15,6 +15,8 @@ interface RoleOption {
   formSubtitle: string;
   icon: React.FC<{ className?: string }>;
   placeholderUsername: string;
+  demoUsername: string;
+  demoPass: string;
 }
 
 const ROLES: RoleOption[] = [
@@ -25,6 +27,8 @@ const ROLES: RoleOption[] = [
     formSubtitle: 'Sign in to continue to the operations portal.',
     icon: ShieldCheck,
     placeholderUsername: 'admin_emp',
+    demoUsername: 'admin_emp',
+    demoPass: 'Admin@12',
   },
   {
     id: 'SALES',
@@ -33,6 +37,8 @@ const ROLES: RoleOption[] = [
     formSubtitle: 'Sign in to manage customers and sales operations.',
     icon: Users,
     placeholderUsername: 'saleemp_001',
+    demoUsername: 'saleemp_001',
+    demoPass: 'Sales@12',
   },
   {
     id: 'WAREHOUSE',
@@ -41,6 +47,8 @@ const ROLES: RoleOption[] = [
     formSubtitle: 'Sign in to manage products and inventory.',
     icon: Boxes,
     placeholderUsername: 'whemp_001',
+    demoUsername: 'whemp_001',
+    demoPass: 'House@12',
   },
   {
     id: 'ACCOUNTS',
@@ -49,6 +57,8 @@ const ROLES: RoleOption[] = [
     formSubtitle: 'Sign in to review business records and challans.',
     icon: Receipt,
     placeholderUsername: 'acemp_001',
+    demoUsername: 'acemp_001',
+    demoPass: 'Account@12',
   },
 ];
 
@@ -69,6 +79,15 @@ export const Login: React.FC = () => {
     setPassword('');
     setShowPassword(false);
     setError('');
+  };
+
+  const fillDemoCredentials = () => {
+    const roleOpt = ROLES.find((r) => r.id === selectedRole);
+    if (roleOpt) {
+      setUsername(roleOpt.demoUsername);
+      setPassword(roleOpt.demoPass);
+      setError('');
+    }
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -271,6 +290,22 @@ export const Login: React.FC = () => {
                       <p className="text-xs text-slate-400 mt-1">
                         {currentRoleOpt?.formSubtitle}
                       </p>
+
+                      <div className="mt-3.5 p-3 rounded-xl bg-purple-500/10 border border-purple-500/25 text-xs flex items-center justify-between">
+                        <div>
+                          <span className="font-semibold block text-[10px] text-purple-300 uppercase tracking-wider">Demo Credentials</span>
+                          <span className="text-slate-200 font-mono text-[11px]">
+                            {currentRoleOpt?.demoUsername} / {currentRoleOpt?.demoPass}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={fillDemoCredentials}
+                          className="px-2.5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-semibold text-[11px] transition-colors shadow-sm cursor-pointer"
+                        >
+                          Auto-fill
+                        </button>
+                      </div>
                     </div>
 
                     {error && (
