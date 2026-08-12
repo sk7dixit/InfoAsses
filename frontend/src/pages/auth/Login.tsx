@@ -95,8 +95,11 @@ export const Login: React.FC = () => {
     setError('');
     setLoading(true);
 
+    const cleanUsername = username.trim();
+    const cleanPassword = password.trim();
+
     try {
-      const response = await authApi.login({ username, password, role: selectedRole || undefined });
+      const response = await authApi.login({ username: cleanUsername, password: cleanPassword, role: selectedRole || undefined });
       const user = response.data.user;
       login(response.data.token, user);
 

@@ -35,8 +35,9 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      // Clear token on 401 Unauthorized
+    const isLoginRequest = error.config?.url?.includes('/auth/login');
+    if (error.response && error.response.status === 401 && !isLoginRequest) {
+      // Clear token on 401 Unauthorized for session expiration
       localStorage.removeItem('erp_token');
       localStorage.removeItem('erp_user');
       if (window.location.pathname !== '/login') {
