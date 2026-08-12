@@ -118,7 +118,14 @@ export const Login: React.FC = () => {
           navigate('/dashboard');
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed. Please check credentials.');
+      console.error('Login request error:', err);
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else if (err.code === 'ERR_NETWORK' || !err.response) {
+        setError('Cannot connect to backend API server. Please ensure backend is running on http://localhost:5000');
+      } else {
+        setError(err.message || 'Login failed. Please check credentials.');
+      }
     } finally {
       setLoading(false);
     }
