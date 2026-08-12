@@ -1,0 +1,192 @@
+================================================================================
+           INFOASSES — ENTERPRISE MINI ERP & CRM SYSTEM SUBMISSION
+================================================================================
+
+1. GITHUB REPOSITORY LINK
+--------------------------------------------------------------------------------
+Repository: https://github.com/sk7dixit/InfoAsses.git
+Branch: main
+
+
+2. LIVE FRONTEND URL
+--------------------------------------------------------------------------------
+Frontend App: https://infoasse-frontend.onrender.com
+(Local Development URL: http://localhost:5173)
+
+
+3. LIVE BACKEND API URL
+--------------------------------------------------------------------------------
+Backend API Base: https://infoasse-backend.onrender.com/api/v1
+(Local Development API Base: http://localhost:5000/api/v1)
+Health Check Endpoint: https://infoasse-backend.onrender.com/health
+
+
+4. TEST LOGIN CREDENTIALS FOR ALL ROLES
+--------------------------------------------------------------------------------
+The system uses Role-Based Access Control (RBAC). Employees log in using their
+assigned Employee ID / Username and Password:
+
+[Admin Role]
+• Username: admin_emp
+• Password: Admin@12
+• Access: Full administrative rights across all modules (Employees, Users, 
+  Products, CRM, Sales Challans, Accounts).
+
+[Sales Role]
+• Username: saleemp_001
+• Password: Sales@12
+• Access: Customer CRM management, lead tracking, product catalog viewing, 
+  and issuing sales delivery challans.
+
+[Warehouse Role]
+• Username: whemp_001
+• Password: House@12
+• Access: Product master management, inventory stock adjustments (IN/OUT), 
+  stock threshold monitoring, and location assignments.
+
+[Accounts Role]
+• Username: acemp_001
+• Password: Account@12
+• Access: Business records, financial summary review, customer billing history, 
+  and delivery challan verification.
+
+
+5. POSTMAN COLLECTION & API DOCUMENTATION
+--------------------------------------------------------------------------------
+A pre-configured Postman v2.1 collection file is located in the repository at:
+./postman_collection.json
+
+To test:
+1. Import 'postman_collection.json' into Postman.
+2. Set 'baseUrl' to 'http://localhost:5000/api/v1' or your live backend URL.
+3. Run any of the Login endpoints to obtain a JWT bearer token.
+
+API Endpoints Overview:
+
+AUTH:
+• POST /api/v1/auth/login      - Login with username, password, and optional role
+• GET  /api/v1/auth/me         - Get current authenticated user profile
+
+EMPLOYEES:
+• GET   /api/v1/employees              - List all employees (Admin)
+• POST  /api/v1/employees              - Create new employee & user account (Admin)
+• GET   /api/v1/employees/stats        - Employee role count statistics (Admin)
+• GET   /api/v1/employees/:id          - Get employee details (Admin)
+• PATCH /api/v1/employees/:id          - Update employee information (Admin)
+• PATCH /api/v1/employees/:id/status   - Toggle employee login status (Admin)
+
+PRODUCTS:
+• GET    /api/v1/products     - List products with category/stock filters
+• GET    /api/v1/products/:id - Get single product details
+• POST   /api/v1/products     - Add new product master (Admin, Warehouse)
+• PUT    /api/v1/products/:id - Edit product details (Admin, Warehouse)
+• DELETE /api/v1/products/:id - Delete product master (Admin)
+
+CUSTOMERS & CRM:
+• GET    /api/v1/customers     - List customer directory (Admin, Sales, Accounts)
+• GET    /api/v1/customers/:id - Get customer profile with order history
+• POST   /api/v1/customers     - Add new customer (Admin, Sales)
+• PUT    /api/v1/customers/:id - Update customer record (Admin, Sales)
+• DELETE /api/v1/customers/:id - Remove customer (Admin)
+
+SALES CHALLANS:
+• GET   /api/v1/challans            - List delivery challans
+• GET   /api/v1/challans/:id        - Get challan details with line items
+• POST  /api/v1/challans            - Issue delivery challan (Admin, Sales)
+• PATCH /api/v1/challans/:id/status - Update challan status (Admin, Accounts, Warehouse)
+• DELETE /api/v1/challans/:id       - Cancel/delete challan (Admin)
+
+INVENTORY:
+• GET  /api/v1/inventory           - View current stock inventory levels
+• POST /api/v1/inventory/movement  - Record manual stock IN/OUT (Admin, Warehouse)
+• GET  /api/v1/inventory/stats     - Low stock & out-of-stock summary
+
+
+6. SETUP AND DEPLOYMENT INSTRUCTIONS
+--------------------------------------------------------------------------------
+A. Local Development Setup:
+
+   1. Clone repository:
+      git clone https://github.com/sk7dixit/InfoAsses.git
+      cd InfoAsses
+
+   2. Backend Setup:
+      cd backend
+      npm install
+      
+      Create '.env' inside 'backend/':
+      PORT=5000
+      DATABASE_URL="postgresql://neondb_owner:npg_qIDcQhT9Ks8a@ep-steep-mountain-axzkykvj-pooler.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require"
+      JWT_SECRET="mini_erp_crm_super_secret_jwt_key_2026"
+      JWT_EXPIRES_IN="7d"
+      FRONTEND_URL="http://localhost:5173"
+
+      Run Database migrations & seed:
+      npx prisma generate
+      npx ts-node prisma/seed.ts
+      
+      Start backend server:
+      npm run dev
+
+   3. Frontend Setup:
+      cd ../frontend
+      npm install
+
+      Create '.env' inside 'frontend/':
+      VITE_API_URL=http://localhost:5000/api/v1
+
+      Start frontend dev server:
+      npm run dev
+
+      Open browser at http://localhost:5173
+
+B. Render Cloud Deployment:
+
+   Backend Web Service:
+   • Root Directory: backend
+   • Build Command: npm install && npx prisma generate && npm run build
+   • Start Command: npm start
+   • Environment Variables: DATABASE_URL, JWT_SECRET, FRONTEND_URL
+
+   Frontend Static Site:
+   • Root Directory: frontend
+   • Build Command: npm install && npm run build
+   • Publish Directory: dist
+   • Environment Variable: VITE_API_URL
+
+
+7. SHORT EXPLANATION OF ARCHITECTURE
+--------------------------------------------------------------------------------
+The platform is designed around a modern, decoupled client-server architecture:
+
+1. Frontend Layer (React 18 + Vite + Tailwind CSS):
+   Single-page application with responsive role-based navigation. Handles client-side
+   state using React Query (caching & background updates) and Context API (auth).
+   Features interactive micro-animations built with Framer Motion and WebGL shaders.
+
+2. Backend API Layer (Node.js + Express + TypeScript):
+   A modular RESTful API divided into clean feature modules (Auth, Employees, 
+   Products, Customers, Challans, Inventory). Enforces authentication via JWT 
+   bearer tokens and authorization using role middleware on protected endpoints.
+
+3. Database & ORM Layer (Neon PostgreSQL + Prisma ORM):
+   Uses a cloud-hosted Neon PostgreSQL database. Prisma ORM handles schema migrations,
+   type-safe queries, and data relationships between Users, Employees, Products,
+   Customers, Delivery Challans, and Stock Movements.
+
+
+8. KNOWN LIMITATIONS OR INCOMPLETE PARTS
+--------------------------------------------------------------------------------
+1. Free Hosting Spin-Down Delay:
+   On free cloud instances (e.g. Render Free Web Services), the backend goes to sleep
+   after 15 minutes of inactivity. The initial request might take 20-30 seconds to warm up.
+
+2. Polling vs Real-Time WebSockets:
+   Inventory adjustments and challan status updates currently refresh on page navigation
+   or HTTP query refetching rather than using real-time WebSockets.
+
+3. Print Stylesheets for PDF Exports:
+   Delivery Challans can be printed directly using browser print stylesheets. Server-side
+   PDF file generation (e.g. using Puppeteer or PDFKit) is planned for a future update.
+
+================================================================================
