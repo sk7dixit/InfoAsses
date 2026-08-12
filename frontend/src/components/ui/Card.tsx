@@ -6,11 +6,17 @@ interface CardProps {
   action?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
+  onClick?: () => void;
 }
 
-export const Card: React.FC<CardProps> = ({ title, subtitle, action, children, className = '' }) => {
+export const Card: React.FC<CardProps> = ({ title, subtitle, action, children, className = '', onClick }) => {
   return (
-    <div className={`bg-white rounded-xl border border-slate-200 shadow-card hover:shadow-card-hover transition-shadow duration-200 ${className}`}>
+    <div
+      onClick={onClick}
+      className={`bg-white rounded-xl border border-slate-200 shadow-card hover:shadow-card-hover transition-shadow duration-200 ${
+        onClick ? 'cursor-pointer' : ''
+      } ${className}`}
+    >
       {(title || action) && (
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
           <div>
