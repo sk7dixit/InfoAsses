@@ -290,22 +290,6 @@ export const Login: React.FC = () => {
                       <p className="text-xs text-slate-400 mt-1">
                         {currentRoleOpt?.formSubtitle}
                       </p>
-
-                      <div className="mt-3.5 p-3 rounded-xl bg-purple-500/10 border border-purple-500/25 text-xs flex items-center justify-between">
-                        <div>
-                          <span className="font-semibold block text-[10px] text-purple-300 uppercase tracking-wider">Demo Credentials</span>
-                          <span className="text-slate-200 font-mono text-[11px]">
-                            {currentRoleOpt?.demoUsername} / {currentRoleOpt?.demoPass}
-                          </span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={fillDemoCredentials}
-                          className="px-2.5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-semibold text-[11px] transition-colors shadow-sm cursor-pointer"
-                        >
-                          Auto-fill
-                        </button>
-                      </div>
                     </div>
 
                     {error && (
