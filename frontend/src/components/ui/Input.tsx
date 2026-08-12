@@ -26,9 +26,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             id={inputId}
             ref={ref}
-            className={`w-full bg-white border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block p-2.5 transition-colors placeholder:text-slate-400 ${
+            className={`w-full bg-white border border-slate-200 text-slate-800 text-xs font-medium rounded-xl h-11 px-3.5 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all placeholder:text-slate-400 shadow-sm hover:border-slate-300 ${
               icon ? 'pl-9' : ''
-            } ${error ? 'border-rose-500 focus:ring-rose-500 focus:border-rose-500' : ''} ${className}`}
+            } ${error ? 'border-rose-500 focus:ring-rose-500/20 focus:border-rose-500' : ''} ${className}`}
             {...props}
           />
         </div>
