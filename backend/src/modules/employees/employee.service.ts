@@ -1,7 +1,6 @@
-import { PrismaClient, Role, EmploymentStatus } from '@prisma/client';
+import { Role, EmploymentStatus } from '@prisma/client';
+import { prisma } from '../../config/database';
 import bcrypt from 'bcryptjs';
-
-const prisma = new PrismaClient();
 
 export class EmployeeService {
   static async getEmployees(query: { search?: string; role?: Role; status?: EmploymentStatus; limit?: number; page?: number }) {
