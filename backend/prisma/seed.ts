@@ -73,14 +73,21 @@ async function main() {
     },
   });
 
-  console.log('✅ Users seeded: admin_emp, saleemp_001, whemp_001, acemp_001');
+  // Legacy EMP- ID migration to role-based username patterns
+  await prisma.employee.updateMany({ where: { employeeId: 'EMP-000' }, data: { employeeId: 'admin_emp' } });
+  await prisma.employee.updateMany({ where: { employeeId: 'EMP-001' }, data: { employeeId: 'saleemp_001' } });
+  await prisma.employee.updateMany({ where: { employeeId: 'EMP-002' }, data: { employeeId: 'whemp_001' } });
+  await prisma.employee.updateMany({ where: { employeeId: 'EMP-003' }, data: { employeeId: 'acemp_001' } });
+  await prisma.employee.updateMany({ where: { employeeId: 'EMP-004' }, data: { employeeId: 'saleemp_002' } });
+  await prisma.employee.updateMany({ where: { employeeId: 'EMP-005' }, data: { employeeId: 'saleemp_003' } });
+  await prisma.employee.updateMany({ where: { employeeId: 'EMP-0014' }, data: { employeeId: 'saleemp_004' } });
 
   // Upsert Employee Records
   await prisma.employee.upsert({
-    where: { employeeId: 'EMP-000' },
-    update: {},
+    where: { employeeId: 'admin_emp' },
+    update: { employeeId: 'admin_emp' },
     create: {
-      employeeId: 'EMP-000',
+      employeeId: 'admin_emp',
       fullName: 'System Administrator',
       email: 'admin@erp.com',
       phone: '+91 9876500000',
@@ -93,10 +100,10 @@ async function main() {
   });
 
   await prisma.employee.upsert({
-    where: { employeeId: 'EMP-001' },
-    update: {},
+    where: { employeeId: 'saleemp_001' },
+    update: { employeeId: 'saleemp_001' },
     create: {
-      employeeId: 'EMP-001',
+      employeeId: 'saleemp_001',
       fullName: 'Sarah Sales Manager',
       email: 'sales@erp.com',
       phone: '+91 9876500001',
@@ -109,10 +116,10 @@ async function main() {
   });
 
   await prisma.employee.upsert({
-    where: { employeeId: 'EMP-002' },
-    update: {},
+    where: { employeeId: 'whemp_001' },
+    update: { employeeId: 'whemp_001' },
     create: {
-      employeeId: 'EMP-002',
+      employeeId: 'whemp_001',
       fullName: 'Wayne Warehouse Lead',
       email: 'warehouse@erp.com',
       phone: '+91 9876500002',
@@ -127,10 +134,10 @@ async function main() {
   });
 
   await prisma.employee.upsert({
-    where: { employeeId: 'EMP-003' },
-    update: {},
+    where: { employeeId: 'acemp_001' },
+    update: { employeeId: 'acemp_001' },
     create: {
-      employeeId: 'EMP-003',
+      employeeId: 'acemp_001',
       fullName: 'Alex Accounts Executive',
       email: 'accounts@erp.com',
       phone: '+91 9876500003',
@@ -143,10 +150,10 @@ async function main() {
   });
 
   await prisma.employee.upsert({
-    where: { employeeId: 'EMP-004' },
-    update: {},
+    where: { employeeId: 'saleemp_002' },
+    update: { employeeId: 'saleemp_002' },
     create: {
-      employeeId: 'EMP-004',
+      employeeId: 'saleemp_002',
       fullName: 'Amit Sharma',
       email: 'amit.sharma@erp.com',
       phone: '+91 9876500004',
@@ -158,10 +165,10 @@ async function main() {
   });
 
   await prisma.employee.upsert({
-    where: { employeeId: 'EMP-005' },
-    update: {},
+    where: { employeeId: 'saleemp_003' },
+    update: { employeeId: 'saleemp_003' },
     create: {
-      employeeId: 'EMP-005',
+      employeeId: 'saleemp_003',
       fullName: 'Neha Patel',
       email: 'neha.patel@erp.com',
       phone: '+91 9876500005',
