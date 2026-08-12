@@ -92,8 +92,8 @@ cp .env.example .env
 Ensure your `backend/.env` contains:
 ```env
 PORT=5000
-DATABASE_URL="postgresql://neondb_owner:npg_qIDcQhT9Ks8a@ep-steep-mountain-axzkykvj-pooler.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require"
-JWT_SECRET="mini_erp_crm_super_secret_jwt_key_2026"
+DATABASE_URL="postgresql://<db_username>:<db_password>@<db_host>/neondb?sslmode=require"
+JWT_SECRET="your_jwt_secret_key_here"
 JWT_EXPIRES_IN="7d"
 FRONTEND_URL="http://localhost:5173"
 ```
