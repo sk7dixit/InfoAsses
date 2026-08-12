@@ -1,0 +1,293 @@
+{
+	"info": {
+		"_postman_id": "c1f2e3d4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+		"name": "InfoAsses - Mini ERP & CRM API Collection",
+		"description": "Complete API Collection for InfoAsses Mini ERP & CRM System with Role-Based Access Control.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin_emp\",\n  \"password\": \"Admin@12\",\n  \"role\": \"ADMIN\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Login (Sales)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"saleemp_001\",\n  \"password\": \"Sales@12\",\n  \"role\": \"SALES\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Get Current User Profile (/auth/me)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/auth/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "me"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Employees",
+			"item": [
+				{
+					"name": "List All Employees",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/employees?page=1&limit=20",
+							"host": ["{{baseUrl}}"],
+							"path": ["employees"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "20" }
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Employee Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/employees/stats",
+							"host": ["{{baseUrl}}"],
+							"path": ["employees", "stats"]
+						}
+					}
+				},
+				{
+					"name": "Create New Employee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"Rahul Verma\",\n  \"employeeId\": \"saleemp_005\",\n  \"email\": \"rahul.verma@erp.com\",\n  \"phone\": \"+91 9876543210\",\n  \"role\": \"SALES\",\n  \"status\": \"ACTIVE\",\n  \"loginEnabled\": true,\n  \"password\": \"Sales@123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/employees",
+							"host": ["{{baseUrl}}"],
+							"path": ["employees"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Products & Catalog",
+			"item": [
+				{
+					"name": "List Products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/products?page=1&limit=20",
+							"host": ["{{baseUrl}}"],
+							"path": ["products"]
+						}
+					}
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"productName\": \"Curved UltraWide Monitor 38inch\",\n  \"sku\": \"MON-38-005\",\n  \"category\": \"Monitors\",\n  \"unitPrice\": 45999,\n  \"currentStock\": 12,\n  \"minimumStock\": 4,\n  \"warehouseLocation\": \"Shelf C-402\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products",
+							"host": ["{{baseUrl}}"],
+							"path": ["products"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Customers & CRM",
+			"item": [
+				{
+					"name": "List Customers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/customers",
+							"host": ["{{baseUrl}}"],
+							"path": ["customers"]
+						}
+					}
+				},
+				{
+					"name": "Create Customer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customerName\": \"TechCorp Global Pvt Ltd\",\n  \"mobile\": \"+91 9123456789\",\n  \"email\": \"procurement@techcorp.com\",\n  \"businessName\": \"TechCorp\",\n  \"customerType\": \"WHOLESALE\",\n  \"address\": \"Tech Park, Bangalore\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/customers",
+							"host": ["{{baseUrl}}"],
+							"path": ["customers"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Sales Challans",
+			"item": [
+				{
+					"name": "List Challans",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/challans",
+							"host": ["{{baseUrl}}"],
+							"path": ["challans"]
+						}
+					}
+				},
+				{
+					"name": "Create Delivery Challan",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customerId\": \"customer-uuid-here\",\n  \"items\": [\n    {\n      \"productId\": \"product-uuid-here\",\n      \"quantity\": 2\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/challans",
+							"host": ["{{baseUrl}}"],
+							"path": ["challans"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5000/api/v1"
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
